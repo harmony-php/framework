@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+$container = require __DIR__ . '/../src/bootstrap.php';
+
+$console = $container->get(\Harmony\Application\Console\Console::class);
+
+$code = $console->execute(
+    new \Symfony\Component\Console\Input\ArgvInput,
+    new \Symfony\Component\Console\Output\ConsoleOutput
+);
+
+exit($code);
