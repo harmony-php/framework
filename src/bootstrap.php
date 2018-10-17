@@ -8,7 +8,19 @@ if (file_exists(__DIR__ . '/.env')) {
 
 $isProduction = strtolower(getenv('ENVIRONMENT')) === 'production';
 
-return (new \Harmony\DI\ContainerFactory([
+return (new \Harmony\DI\ContainerFactory(array_merge([
+    \Harmony\Config::class => \DI\factory(function (\Psr\Container\ContainerInterface $container) {
+        return \Harmony\ConfigFactory::create(require __DIR__ . '/config/config.php');
+    }),
+
+    \Harmony\DAL\Model\Hydration\Hydrator::class => \DI\factory(function (\Psr\Container\ContainerInterface $container) {
+        return new \Harmony\Framework\Model\Hydration\Hydrator;
+    }),
+
+    \Harmony\DAL\Model\Hydration\Extractor::class => \DI\factory(function (\Psr\Container\ContainerInterface $container) {
+        return new \Harmony\Framework\Model\Hydration\Extractor;
+    }),
+
     \Symfony\Component\Console\Application::class => \DI\factory(function (\Psr\Container\ContainerInterface $container) use ($isProduction) {
         $app = new \Symfony\Component\Console\Application('CLI Application');
 
@@ -30,4 +42,4 @@ return (new \Harmony\DI\ContainerFactory([
     \Psr\Log\LoggerInterface::class => \DI\factory(function (\Psr\Container\ContainerInterface $container) {
         return new \Psr\Log\NullLogger;
     })
-]))->create(require __DIR__ . '/config/definitions.php');
+], (new \Harmony\DAL\Illuminate\ConfigProvider)->getConfig('database'))))->create(require __DIR__ . '/config/definitions.php');

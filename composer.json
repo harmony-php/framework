@@ -2,6 +2,7 @@
   "name": "harmony-php/framework",
   "description": "",
   "license": "MIT",
+  "minimum-stability": "dev",
   "authors": [
     {
       "name": "Nathan King",
@@ -12,8 +13,9 @@
   "require": {
     "php": "^7.2",
     "vlucas/phpdotenv": "^2.5",
-    "harmony-php/container": "^1.0",
-    "harmony-php/console": "^1.0"
+    "harmony-php/container": "^1.1",
+    "harmony-php/console": "^1.0",
+    "harmony-php/dal-illuminate": "v1.0"
   },
   "config": {
     "vendor-dir": "src/vendor"
